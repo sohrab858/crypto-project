@@ -4,17 +4,18 @@ import chartDown from "../../assets/chart-down.svg";
 import { RotatingLines } from "react-loader-spinner";
 
 import PropTypes from "prop-types";
+import styles from "./TableCoin.module.css";
 
 function Tablecoin({ coins, isLoading }) {
   console.log(coins);
   return (
-    <div>
+    <div className={styles.container}>
       {isLoading ? (
         <p>
           <RotatingLines strokeColor="#3874ff" strokeWidth="2" />
         </p>
       ) : (
-        <table>
+        <table className={styles.table}>
           <thead>
             <tr>
               <th>coin</th>
@@ -51,14 +52,16 @@ const TableRow = ({
   return (
     <tr>
       <td>
-        <div>
+        <div className={styles.symbol}>
           <img src={image} alt={name} />
           <span>{symbol.toUpperCase()}</span>
         </div>
       </td>
       <td>{name}</td>
       <td>${current_price.toLocaleString()}</td>
-      <td>{price_change.toFixed(2)}%</td>
+      <td className={price_change > 0 ? styles.success : styles.error}>
+        {price_change.toFixed(2)}%
+      </td>
       <td>{total_volume.toLocaleString()}</td>
       <td>
         <img src={price_change > 0 ? chartUp : chartDown} alt={name}></img>
