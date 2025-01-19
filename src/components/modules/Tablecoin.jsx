@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 import styles from "./TableCoin.module.css";
 
 function Tablecoin({ coins, isLoading }) {
-  console.log(coins);
   return (
     <div className={styles.container}>
       {isLoading ? (
