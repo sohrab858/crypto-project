@@ -2,11 +2,12 @@ import chartUp from "../../assets/chart-up.svg";
 import chartDown from "../../assets/chart-down.svg";
 
 import { RotatingLines } from "react-loader-spinner";
+import { marketChart } from "../../services/crypto";
 
 import PropTypes from "prop-types";
 import styles from "./TableCoin.module.css";
 
-function Tablecoin({ coins, isLoading }) {
+function Tablecoin({ coins, isLoading, setChart }) {
   return (
     <div className={styles.container}>
       {isLoading ? (
@@ -27,7 +28,7 @@ function Tablecoin({ coins, isLoading }) {
           </thead>
           <tbody>
             {coins.map((coin) => (
-              <TableRow coin={coin} key={coin.id} />
+              <TableRow coin={coin} key={coin.id} setChart={setChart} />
             ))}
           </tbody>
         </table>
@@ -40,6 +41,7 @@ export default Tablecoin;
 
 const TableRow = ({
   coin: {
+    id,
     name,
     image,
     symbol,
@@ -47,11 +49,23 @@ const TableRow = ({
     price_change_percentage_24h: price_change,
     current_price,
   },
+  setChart,
 }) => {
+  const showHandler = async () => {
+    try {
+      const res = await fetch(marketChart(id));
+      const json = await res.json();
+      console.log(json);
+      setChart(json);
+    } catch (error) {
+      setChart(null);
+    }
+  };
+
   return (
     <tr>
       <td>
-        <div className={styles.symbol}>
+        <div className={styles.symbol} onClick={showHandler}>
           <img src={image} alt={name} />
           <span>{symbol.toUpperCase()}</span>
         </div>
